@@ -1,10 +1,11 @@
 class User(object):
 
-    def __init__(self):
-        self._name = ""
-        self._email = ""
-        self._nick = ""
-        self._pass = ""
+    def __init__(self, id, name, email, nick, pass):
+        seld._id = id
+        self._name = name
+        self._email = email
+        self._nick = nick
+        self._pass = pass
 
     def getName(self):
         return self._name
