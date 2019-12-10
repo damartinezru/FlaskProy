@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 app.secret_key = 'mysecretkey'
 
-#User definition
+# User definition #
 def hash_password(password):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
     passwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'),
@@ -24,8 +24,10 @@ def verify_password(stored_passwd, provided_passwd):
                                   100000)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == stored_passwd
+
 user_p = User(0, "Nombre", "Email@mail.com", "Nickname", hash_password("12345"))
 
+# Routes Configuration #
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -45,8 +47,6 @@ def login_user():
 def log_out():
     flash('Has gone out of your account!')
     return redirect(url_for('index'))
-
-
 
 if __name__ == '__main__':
     app.run(port = 3000, debug = True)
