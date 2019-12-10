@@ -1,13 +1,6 @@
 {% extends 'layout.html' %}
 {% block body %}
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages%}
-<p>{{message}}</p>
-{% endfor %}
-{% endif %}
-{% endwith %}
 
 <div class="row">
   <div class="col-8">
@@ -20,6 +13,15 @@
     <hr>
     <h4>Sign In</h4>
     <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages%}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <form class="" action="/login_user" method="POST">
       <p> Nickname: <input type="text" name="nick" placeholder="Nickname" required> </p>
       <p> Password: <input type="password" name="pass" placeholder="PassWord" required> </p>
