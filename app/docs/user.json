@@ -1,0 +1,4 @@
+[
+    {"name":"Daissi", "email":"dbg@gmail.com", "nick":"dbgroldanNick", "hashed_passwd":"93bb0282d598f1e02de597972b3fbfd7ff0699bc8006c6d45539ab85a94ad0b9cc0d00b16ebd4b48d19480f382bab39d60e721fc903a31657c22a4dc9c8732b234eb74957becfc68400e54bf3473ecce9a8b809f14374cb559134b0532d5f0d6"},
+    {"name":"Gabriel", "email":"gab32@gmail.com", "nick":"gabNick", "hashed_passwd":"23fd1c3261a85a3c6a605ca1d26fbb12bb41076feef7d0be42dc8bd235bab71f6442eda5e42f23685ab940f7163ab88ed9e0a7f617db5f75569ef7e35c0f116c6b948dcbd12ae6da406af9bc7346e94216cddc944eb8908da4109004251c9ca2"}
+]
