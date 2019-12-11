@@ -1,35 +1,28 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, redirect, url_for, flash
-import hashlib, binascii, os
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response
+import json
 from model import User
+from utils.hash_verification import Hash
+from utils.token_session import Token
 
 app = Flask(__name__)
-
 app.secret_key = 'mysecretkey'
+token = Token()
 
 # User definition #
-def hash_password(password):
-    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
-    passwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'),
-                                salt, 100000)
-    passwdhash = binascii.hexlify(passwdhash)
-    return (salt + passwdhash).decode('ascii')
-
-def verify_password(stored_passwd, provided_passwd):
-    salt = stored_passwd[:64]
-    stored_passwd = stored_passwd[64:]
-    pwdhash = hashlib.pbkdf2_hmac('sha512',
-                                  provided_passwd.encode('utf-8'),
-                                  salt.encode('ascii'),
-                                  100000)
-    pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-    return pwdhash == stored_passwd
-
-user_p = User(0, "Nombre", "Email@mail.com", "Nickname", hash_password("12345"))
+#dbgroldanNick: 12345
+#gabNick: prueba
+with open('docs/user.json') as json_file:
+    data_users = json.load(json_file)
 
 # Routes Configuration #
 @app.route('/')
 def index():
+    exist_token = request.cookies.get('token')
+    if exist_token is not None:
+        if token.verify_token(exist_token, data_users):
+            user = token.getUser()
+            return render_template('account.html', user = user)
     return render_template('index.html')
 
 @app.route('/login_user', methods = ['POST'])
@@ -37,9 +30,13 @@ def login_user():
     if request.method == 'POST':
         nick = request.form['nick']
         passwd = request.form['pass']
-        if nick == user_p.getNick() and verify_password(user_p.getPass(),passwd): #passwd == user_p.getPass():
-            user = user_p
-            return render_template('account.html', user = user)
+        for user in data_users:
+            if user["nick"] == nick and Hash.verify_two_hash(user["hashed_passwd"], passwd):
+                print(user["name"])
+                user = User(user["name"], user["email"], user["nick"], user["hashed_passwd"])
+                resp = make_response(render_template('account.html', user = user))
+                resp.set_cookie("token", token.generate_token(nick, user.getEmail()))
+                return resp
     flash('Invalid Login!')
     return redirect(url_for('index'))
 

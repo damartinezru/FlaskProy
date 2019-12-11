@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 class User(object):
 
-    def __init__(self, id, name, email, nick, passwd):
-        self._id = id
+    def __init__(self, name, email, nick, passwd):
         self._name = name
         self._email = email
         self._nick = nick
